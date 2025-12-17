@@ -6,6 +6,8 @@
   <title>Webstar Football Academy Solutions</title>
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://kit.fontawesome.com/e46c019f1c.js" crossorigin="anonymous"></script>
+
   <style>
     /* ===========================
        RESET & BASE
@@ -756,6 +758,45 @@
       margin-top:10px;
     }
 
+    /* Footer social layout */
+    .footer-meta{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .footer-meta .copyright{flex:1;color:rgba(255,255,255,0.6)}
+
+    .footer-social{display:flex;gap:10px;align-items:center}
+
+    .social-link{
+      display:inline-grid;
+      place-items:center;
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--white);
+      transition:all 0.25s ease;
+      text-decoration:none;
+    }
+
+    .social-link i{font-size:1.05rem}
+
+    .social-link:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(212,27,46,0.18);background:linear-gradient(135deg,var(--accent),#b21b2c);color:#fff;border-color:transparent}
+
+    .social-link:focus{outline:2px solid rgba(212,27,46,0.18);outline-offset:3px}
+
+    @media (max-width:767px){
+      footer{padding:20px 4vw}
+      .footer-meta{flex-direction:column;align-items:center;gap:10px}
+    }
+
     /* DECORATIVE ACCENT */
     main > section h2::after{
       content:'';
@@ -1402,7 +1443,7 @@
         <address>
           <strong>Webstar Football Academy Solutions</strong>
           <p>Phone: +234 905 535 4739</p>
-          <p>Email: webstarfootballacademy2010@gmail.com</p>
+          <p>Email: <small>webstarfootballacademy2010@gmail.com</small></p>
         </address>
       </div>
     </section>
@@ -1416,7 +1457,32 @@
   </main>
 
   <footer>
-    <div>&copy; <span id="year"></span> Webstar Football Academy Solutions • All rights reserved</div>
+    <div class="footer-meta">
+      <div class="copyright">&copy; <span id="year"></span> Webstar Football Academy Solutions • All rights reserved</div>
+
+      <div class="footer-social" aria-label="Follow us on social">
+        <a class="social-link" href="https://www.instagram.com/webstar.football.academy2010?igsh=cjMydWJ4ZDg5YTVj" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a class="social-link" href="#" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a class="social-link" href="https://x.com/TeamWebstar20?t=FFfRGZD6ED6p3tprtUZDdw&s=01"  aria-label="X" title="X" target="_blank" rel="noopener">
+          <i class="fa-brands fa-x" aria-hidden="true"></i>
+        </a>
+        <a class="social-link" href="https://www.tiktok.com/@webstarfootballacademy?_r=1&_t=ZS-92HnBSZcxUa" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener">
+          <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+        </a>
+        <a class="social-link" href="
+https://www.threads.com/@webstar.football.academy2010" aria-label="Threads" title="Threads" target="_blank" rel="noopener">
+          <i class="fa-brands fa-threads" aria-hidden="true"></i>
+        </a>
+        <a class="social-link" href="
+https://youtube.com/@webstarfootballacademy3195?si=TsSUNFjV53vw6ZG7" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
   </footer>
 
   <!-- Back to Top Button -->

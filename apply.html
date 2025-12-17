@@ -191,6 +191,8 @@
       <div class="card">
         <form id="apply-form" novalidate enctype="multipart/form-data" autocomplete="on" aria-label="Application form" action="https://formspree.io/f/xzzaznpw"
   method="POST" >
+          <!-- Redirect fallback for non-AJAX submissions -->
+          <input type="hidden" name="_next" value="./thank-you.html">
           <div class="two-col">
             <div class="form-row">
               <label for="first">First Name *</label>
@@ -361,12 +363,12 @@
       });
 
       if (form){
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
           e.preventDefault();
           let ok = true;
           [first,last,email].forEach(i => {
             if (!i.value.trim()){ setError(i, 'This field is required'); ok = false; }
-            else { if (i.name === 'email' && !isValidEmail(i.value)){ setError(i, 'Invalid email'); ok=false; } else clearError(i); }
+            else { if (i.name === 'email' && !isValidEmail(i.value)) { setError(i, 'Invalid email'); ok = false; } else { clearError(i); } }
           });
 
           const file = cv.files && cv.files[0];
@@ -377,19 +379,42 @@
 
           if (!ok){ showToast('Please fix the errors and try again', 'error'); return; }
 
-          // Simulate submission
           const btn = form.querySelector('button[type="submit"]');
+          const originalBtnText = btn.textContent;
           btn.disabled = true;
-          btn.textContent = 'Sending';
+          btn.textContent = 'Sending...';
           formState.textContent = 'Submitting...';
 
-          setTimeout(() => {
-            showToast('Application submitted — we\'ll reach out via email', 'success');
-            form.reset();
+          // Build FormData and ensure reply-to + subject
+          const fd = new FormData(form);
+          if (!fd.get('_replyto')) fd.append('_replyto', email.value || '');
+          fd.append('_subject', 'New application from website');
+
+          try {
+            const resp = await fetch(form.action || 'https://formspree.io/f/yourFormId', {
+              method: 'POST',
+              headers: { 'Accept': 'application/json' },
+              body: fd
+            });
+
+            if (resp.ok) {
+              showToast('Application submitted — we\'ll reach out via email', 'success');
+              form.reset();
+              // small delay so the user sees the toast, then redirect to thank-you page
+              setTimeout(() => { window.location.href = './thank-you.html'; }, 1100);
+            } else {
+              const data = await resp.json().catch(() => null);
+              const msg = (data && (data.error || (data.errors && data.errors.map(err => err.message).join(', ')))) || 'Submission failed';
+              showToast(msg, 'error');
+            }
+          } catch (err) {
+            console.error(err);
+            showToast('Network error — please try again', 'error');
+          } finally {
             btn.disabled = false;
-            btn.textContent = 'Submit Application';
+            btn.textContent = originalBtnText;
             formState.textContent = '';
-          }, 1500);
+          }
         });
       }
     })();
